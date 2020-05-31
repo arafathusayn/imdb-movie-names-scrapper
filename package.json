@@ -1,0 +1,29 @@
+{
+  "name": "imdb-movie-names-scrapper",
+  "version": "1.0.0",
+  "description": "it scrapes imdb movie names by genre",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "dev": "nodemon -e ts --exec \"npm run build && npm start\"",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/arafathusayn/imdb-movie-names-scrapper.git"
+  },
+  "keywords": [
+    "scrapper",
+    "imdb"
+  ],
+  "author": "Arafat Husayn <hello@arafat.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arafathusayn/imdb-movie-names-scrapper/issues"
+  },
+  "homepage": "https://github.com/arafathusayn/imdb-movie-names-scrapper#readme",
+  "devDependencies": {
+    "typescript": "^3.9.3",
+    "nodemon": "^2.0.4"
+  }
+}
