@@ -1,10 +1,15 @@
 import fetch, { Response } from "node-fetch"
+import { JSDOM } from "jsdom"
+
+type FinalJsonDataType = { title: string; year: string }[]
 
 console.log(new Date().toString())
 
 console.log("== Starting the scrapper ==")
 
 const main = async (): Promise<void> => {
+  let finalData: FinalJsonDataType = []
+
   const response: Response = await fetch("https://www.imdb.com/feature/genre/")
 
   const body: string = await response.text()
@@ -48,6 +53,30 @@ const main = async (): Promise<void> => {
     let pageCounter: number = 1
 
     while (true) {
+      const {
+        window: { document },
+      } = new JSDOM(body)
+
+      const titles: (string | null)[] = Array.from(
+        document.querySelectorAll(".col-title a")
+      ).map((el) => el.textContent)
+
+      const years: (string | null)[] = Array.from(
+        document.querySelectorAll(".col-title .lister-item-year")
+      ).map(
+        (el) =>
+          el.textContent && el.textContent.replace("(", "").replace(")", "")
+      )
+
+      const data: FinalJsonDataType = titles.map((t, i) => ({
+        title: t || "",
+        year: years[i] || "",
+      }))
+
+      finalData = finalData.concat(data)
+
+      console.log("final data length:", finalData.length)
+
       nextPageLinkMatch = body.match(/a href="((.+)adv_nxt)/)
 
       if (!nextPageLinkMatch) {
@@ -63,8 +92,6 @@ const main = async (): Promise<void> => {
 
       body = await response.text()
     }
-
-    break
   }
 }
 
