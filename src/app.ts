@@ -7,6 +7,7 @@ import { Transform } from "json2csv";
 type Movie = {
   title: string;
   year: string;
+  rating: string;
   genres: string[];
 };
 
@@ -32,7 +33,10 @@ const main = async (): Promise<void> => {
 
   const urls: string[] | null =
     matches &&
-    matches.map((m) => `https://www.imdb.com${m}&sort=alpha,asc&view=simple`);
+    matches.map(
+      (m) =>
+        `https://www.imdb.com${m}&sort=user_rating,desc&num_votes=10000,&view=simple`,
+    );
 
   console.log("Genres: ", urls);
 
@@ -91,9 +95,14 @@ const main = async (): Promise<void> => {
           el.textContent && el.textContent.replace("(", "").replace(")", ""),
       );
 
+      const ratings: (string | null)[] = Array.from(
+        document.querySelectorAll(".col-imdb-rating strong"),
+      ).map((el) => el.getAttribute("title"));
+
       let data: FinalJsonDataType = titles.map((t, i) => ({
         title: t || "",
         year: years[i] || "",
+        rating: ratings[i] || "",
         genres,
       }));
 
@@ -172,6 +181,7 @@ const main = async (): Promise<void> => {
           label: "genres",
           value: (row: Movie) => row.genres.join(","),
         },
+        "rating",
       ],
     },
     {
