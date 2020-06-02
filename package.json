@@ -28,8 +28,10 @@
   },
   "dependencies": {
     "@types/jsdom": "^16.2.3",
+    "@types/json2csv": "^5.0.1",
     "@types/node-fetch": "^2.5.7",
     "jsdom": "^16.2.2",
+    "json2csv": "^5.0.1",
     "node-fetch": "^2.6.0"
   }
 }
